@@ -1,0 +1,38 @@
+#!/bin/python
+
+import subprocess
+import os
+import threading
+import sys
+import json
+from time import *
+term_id=sys.argv[1]
+lastinit={}
+def update_config(file):
+	lastinit[file]=os.path.getmtime(file)
+
+def has_file_changed(file):
+	return lastinit[file] != os.path.getmtime(file)
+
+def auto_resize():
+	update_config("/tmp/tkTermrs" + term_id)
+	while True:
+		if has_file_changed("/tmp/tkTermrs" + term_id):
+			os.system('printf "$(cat /tmp/tkTermrs' + term_id + ')"')
+			update_config("/tmp/tkTermrs" + term_id)
+		sleep(0.05)
+
+def commands():
+	update_config("/tmp/tkTerm" + term_id)
+	while True:
+		if has_file_changed("/tmp/tkTerm" + term_id):
+			os.system('$(cat /tmp/tkTerm' + term_id + ' | grep . | tail -1)')
+			update_config("/tmp/tkTerm" + term_id)
+		sleep(0.05)
+thread1 = threading.Thread(target=auto_resize)
+thread2 = threading.Thread(target=commands)
+thread1.start()
+thread2.start()
+thread1.join()
+thread2.join()
+
