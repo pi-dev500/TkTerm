@@ -24,7 +24,7 @@ class Terminal(tk.Frame):
         print(xterm_window_id)
         if xterm_window_id:
             # Launch the xterm window with the appropriate font
-            xterm_command="'python command_tkterm " + str(xterm_window_id) + " && sleep 10'"
+            xterm_command="'python command_tkterm " + str(xterm_window_id) + " && sleep 10 || sleep 10'"
             command = f"xterm -ah -into {xterm_window_id} -rightbar -fa '{font}' -fs '{size}' -e '{xterm_command}' &>/dev/null"
             subprocess.Popen([command], shell=True)
         else:
@@ -34,9 +34,9 @@ class Terminal(tk.Frame):
             width = round(self.xterm_frame.winfo_width() / 10) - 1
             height = round(self.xterm_frame.winfo_height() / 19) - 1
             reso.write("\e[8;" + str(height) + ";" + str(width) + "t")
-        self.after(50, self.update_resolution)
+        self.after(100, self.update_resolution)
     def run(self, command="bash"):
-        with open("/tmp/tkTerm" + str(self.xterm_frame.winfo_id()), 'w') as command_file:
+        with open("/tmp/tkTerm" + str(self.xterm_frame.winfo_id()), 'a') as command_file:
             command_file.write("\n" + command)
     def display_true(self):
         self.xterm_frame.pack(fill="both", expand=True)
@@ -47,8 +47,7 @@ class Terminal(tk.Frame):
 if __name__=="__main__":
     root = tk.Tk()
     root.title("TkTerminal")
-    #root.attributes("-fullscreen", True)
     root.geometry("700x600")
     app = Terminal(root)
-    root.after(2000,app.run)
+    app.run()
     root.mainloop()

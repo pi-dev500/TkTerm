@@ -23,10 +23,14 @@ def auto_resize():
 		sleep(0.05)
 
 def commands():
-	update_config("/tmp/tkTerm" + term_id)
+	while not os.path.isfile("/tmp/tkTerm" + term_id):
+		sleep(0.5)
+	lastinit["/tmp/tkTerm" + term_id] = 0
 	while True:
 		if has_file_changed("/tmp/tkTerm" + term_id):
-			os.system('$(cat /tmp/tkTerm' + term_id + ' | grep . | tail -1)')
+			line=subprocess.check_output(['true'], shell=True)
+			os.system('bash -c "$(echo "echo -n >/tmp/tkTerm' + str(term_id) + '" && cat /tmp/tkTerm' + str(term_id) + ' | grep .)"')
+			
 			update_config("/tmp/tkTerm" + term_id)
 		sleep(0.05)
 thread1 = threading.Thread(target=auto_resize)
