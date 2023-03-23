@@ -21,7 +21,7 @@ class Terminal(tk.Frame):
         self.run(command='true')
         # Get the xterm_frame window ID
         xterm_window_id = self.xterm_frame.winfo_id()
-        print(xterm_window_id)
+        self.id=xterm_window_id
         if xterm_window_id:
             # Launch the xterm window with the appropriate font
             xterm_command="'python command_tkterm " + str(xterm_window_id) + " && sleep 10 || sleep 10'"
