@@ -1,1 +1,2 @@
 xterm*allowWindowOps: true
+xterm*selectToClipboard : true
