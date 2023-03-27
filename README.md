@@ -15,7 +15,7 @@ sudo apt install python3-tkinter xterm -y
 ### Use:
 Just download this repo and run __init__.py (for simple terminal use):
 ```
-git clone https://github.com/pi-dev500/Tkterm
+git clone https://github.com/pi-dev500/TkTerm
 cd TkTerm
 python3 __init__.py
 ```
